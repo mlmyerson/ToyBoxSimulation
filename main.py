@@ -1,0 +1,5 @@
+# Parameters
+CHILDREN = 2
+MIN_TARGETS = 1
+MAX_TARGETS = 3
+BINS = 5
