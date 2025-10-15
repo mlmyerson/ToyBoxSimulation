@@ -1,5 +1,6 @@
 # Parameters
 CHILDREN = 2
+PARENTS = 2
 MIN_TARGETS = 0
 MAX_TARGETS = 3
 BINS = 5
@@ -11,12 +12,32 @@ performance = {}
 max__secs = 600 #child loosess interest after 10 mins
 search_elapsed_secs = 0
 sort_elapsed_secs = 0
+
+# assign each toy an id and bin and whether its a target
+def initToys():
+	pass
+
+# uniform dist for bin assignment
+def initBins():
+	pass
+
+# assign each child a set of target toy ids
+def initChildren():
+	pass
+
+def initParents():
+	pass
+
+
+# ! overlap in bins and targets is ok
+# ! children may not be looking for a toy at all (MIN_TARGETS=0)
+toys = initToys()
+pile = [] # toys go in the pile after a bin being emptied
+bins = initBins()
+children = initChildren()
+parents = initParents()
+
 while search_elapsed_secs < max__secs:
-	# ! overlap in bins and targets is ok
-	# ! children may not be looking for a toy at all (MIN_TARGETS=0)
-	# assign each toy an id and bin and whether its a target
-		# uniform dist for bin assignment
-	# assign each child a set of target toy ids
     # pick a bin to dump out randomly for each child
 		# just pick randomly using uniform dist
     # have the children sort through the toys (0 - ~1 secs per child)
