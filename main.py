@@ -4,6 +4,7 @@ MIN_TARGETS = 0
 MAX_TARGETS = 3
 BINS = 5
 TOYS = 100
+PRESORT_BINS = True # do all the toys in the bins start maximally sorted?
 
 performance = {}
 
@@ -13,7 +14,7 @@ sort_elapsed_secs = 0
 while search_elapsed_secs < max__secs:
 	# ! overlap in bins and targets is ok
 	# ! children may not be looking for a toy at all (MIN_TARGETS=0)
-	# assign each toy an id and bin
+	# assign each toy an id and bin and whether its a target
 		# uniform dist for bin assignment
 	# assign each child a set of target toy ids
     # pick a bin to dump out randomly for each child
