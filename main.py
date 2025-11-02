@@ -1,22 +1,52 @@
+import json
 import random
+from pathlib import Path
 
 from Bin import Bin
 from Child import Child
 from Parent import Parent
 from Toy import Toy
 
-# Parameters
-CHILDREN = 2
-PARENTS = 2
-MIN_TARGETS = 0
-MAX_TARGETS = 3
-BINS = 5
-TOYS = 100
-PRESORT_BINS = True # do all the toys in the bins start maximally sorted?
+SETTINGS_PATH = Path(__file__).with_name("settings.json")
+
+DEFAULT_SETTINGS = {
+    "children": 2,
+    "parents": 2,
+    "min_targets": 0,
+    "max_targets": 3,
+    "bins": 5,
+    "toys": 100,
+    "presort_bins": True,
+    "max_search_seconds": 600,
+    "random_seed": None,
+}
+
+
+def load_settings(path: Path = SETTINGS_PATH):
+    settings = DEFAULT_SETTINGS.copy()
+    if path.exists():
+        with path.open() as handle:
+            file_settings = json.load(handle)
+        settings.update(file_settings)
+    return settings
+
+
+settings = load_settings()
+
+if settings.get("random_seed") is not None:
+    random.seed(settings["random_seed"])
+
+CHILDREN = settings["children"]
+PARENTS = settings["parents"]
+MIN_TARGETS = settings["min_targets"]
+MAX_TARGETS = settings["max_targets"]
+BINS = settings["bins"]
+TOYS = settings["toys"]
+PRESORT_BINS = settings["presort_bins"]
+MAX_SEARCH_SECONDS = settings["max_search_seconds"]
 
 performance = {}
 
-max__secs = 600 #child loosess interest after 10 mins
 search_elapsed_secs = 0
 sort_elapsed_secs = 0
 
@@ -69,7 +99,7 @@ bins = initBins(toys)
 children = initChildren(toys)
 parents = initParents()
 
-while search_elapsed_secs < max__secs:
+while search_elapsed_secs < MAX_SEARCH_SECONDS:
     # pick a bin to dump out randomly for each child
 		# just pick randomly using uniform dist
     # have the children sort through the toys (0 - ~1 secs per child)

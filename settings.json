@@ -1,0 +1,11 @@
+{
+  "children": 2,
+  "parents": 2,
+  "min_targets": 0,
+  "max_targets": 3,
+  "bins": 5,
+  "toys": 100,
+  "presort_bins": true,
+  "max_search_seconds": 600,
+  "random_seed": null
+}
