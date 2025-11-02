@@ -1,3 +1,10 @@
+import random
+
+from Bin import Bin
+from Child import Child
+from Parent import Parent
+from Toy import Toy
+
 # Parameters
 CHILDREN = 2
 PARENTS = 2
@@ -15,26 +22,51 @@ sort_elapsed_secs = 0
 
 # assign each toy an id and bin and whether its a target
 def initToys():
-	pass
+    toys = []
+    for toy_id in range(TOYS):
+        if PRESORT_BINS:
+            bin_id = toy_id % BINS
+        else:
+            bin_id = random.randrange(BINS)
+        toy = Toy(toy_id, False, bin_id)
+        toys.append(toy)
+    return toys
 
 # uniform dist for bin assignment
-def initBins():
-	pass
+def initBins(toys):
+    bin_lookup = {bin_id: [] for bin_id in range(BINS)}
+    for toy in toys:
+        bin_lookup[toy.current_bin].append(toy)
+    return [Bin(bin_id, bin_lookup[bin_id]) for bin_id in range(BINS)]
 
 # assign each child a set of target toy ids
-def initChildren():
-	pass
+def initChildren(toys):
+    children = []
+    toy_pool = list(toys)
+    for child_id in range(CHILDREN):
+        target_count = random.randint(MIN_TARGETS, MAX_TARGETS)
+        if target_count and toy_pool:
+            choices = random.sample(toy_pool, min(target_count, len(toy_pool)))
+        else:
+            choices = []
+        target_ids = {toy.id for toy in choices}
+        child = Child(child_id, target_ids)
+        children.append(child)
+        for toy in choices:
+            toy.target = True
+            toy.target_children.add(child.id)
+    return children
 
 def initParents():
-	pass
+    return [Parent(parent_id) for parent_id in range(PARENTS)]
 
 
 # ! overlap in bins and targets is ok
 # ! children may not be looking for a toy at all (MIN_TARGETS=0)
 toys = initToys()
 pile = [] # toys go in the pile after a bin being emptied
-bins = initBins()
-children = initChildren()
+bins = initBins(toys)
+children = initChildren(toys)
 parents = initParents()
 
 while search_elapsed_secs < max__secs:
